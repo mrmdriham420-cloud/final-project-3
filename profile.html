@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartLearning - Profile</title>
+
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="logo">SmartLearning</div>
+
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="courses.html">Courses</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+
+        <div class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </nav>
+
+    <!-- Profile -->
+    <section style="padding:120px 20px; display:flex; justify-content:center;">
+
+        <div style="background:#222; color:white; width:400px; padding:30px; border-radius:12px; text-align:center;">
+
+            <h1 style="color:#00bcd4;">👤 My Profile</h1>
+
+            <hr><br>
+
+            <h2 id="profile-name">Loading...</h2>
+
+            <p id="profile-email"></p>
+
+            <br>
+
+            <button onclick="logoutUser()"
+                style="padding:10px 25px;background:#ff4444;color:white;border:none;border-radius:6px;cursor:pointer;">
+                Logout
+            </button>
+
+        </div>
+
+    </section>
+
+<script>
+
+const token = localStorage.getItem("token");
+
+if(!token){
+    alert("Please Login First");
+    window.location.href="login.html";
+}
+
+fetch("http://localhost:5000/api/auth/profile",{
+
+    method:"GET",
+
+    headers:{
+        Authorization:token
+    }
+
+})
+.then(res=>res.json())
+.then(user=>{
+
+    document.getElementById("profile-name").innerHTML = user.name;
+
+    document.getElementById("profile-email").innerHTML = user.email;
+
+})
+.catch(err=>{
+
+    console.log(err);
+
+    alert("Profile Load Failed");
+
+});
+
+</script>
+
+</body>
+</html>
